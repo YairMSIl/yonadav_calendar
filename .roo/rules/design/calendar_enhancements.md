@@ -68,7 +68,7 @@ We will enhance the calendar display with the following information:
     *   Both month names will also be displayed on the very first day of the generated calendar range.
 
 2.  **Parashat Shavua:**
-    *   The weekly Torah portion will be displayed on every Saturday, retrieved from the Hebcal API.
+    *   The weekly Torah portion (events formatted as "Parashat XXXX") will be displayed *only* on Saturdays. If the API returns this event on any other day, it will be ignored.
 
 #### Implementation Plan
 1.  **Modify `generateCalendar`:**

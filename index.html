@@ -337,6 +337,10 @@
                     if (hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
                         cellHTML += '<div class="events">';
                         hebrewDateInfo.events.forEach(event => {
+                            // Only show Parashat on Saturdays (weekday 6)
+                            if (event.startsWith('Parashat') && weekday !== 6) {
+                                return; // Skip this event
+                            }
                             cellHTML += `<div>${event}</div>`;
                         });
                         cellHTML += '</div>';
