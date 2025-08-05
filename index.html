@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>לוח שנה דינמי</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            direction: rtl;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .calendar-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .calendar-header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 5px;
+        }
+        .day-header {
+            background-color: #3498db;
+            color: white;
+            text-align: center;
+            padding: 10px 5px;
+            font-weight: bold;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .calendar-cell {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 8px 5px;
+            min-height: 70px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+        .calendar-cell:hover {
+            box-shadow: 0 0 8px rgba(0,0,0,0.15);
+        }
+        .date {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2c3e50;
+        }
+        .hebrew-date {
+            font-size: 13px;
+            color: #2c3e50;
+            margin-top: 4px;
+        }
+       .hebrew-month {
+           font-size: 12px;
+           color: #e74c3c;
+           font-weight: bold;
+           margin-top: 4px;
+       }
+       .gregorian-month {
+           font-size: 12px;
+           color: #3498db;
+           font-weight: bold;
+           margin-top: 4px;
+       }
+       .events {
+           font-size: 11px;
+           margin-top: 5px;
+           line-height: 1.3;
+           color: #333;
+       }
+       .events div {
+           margin-bottom: 2px;
+       }
+       .marking {
+           position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 12px;
+            height: 12px;
+            opacity: 0.8;
+            border-radius: 2px;
+        }
+        .blue-marking {
+            background-color: #5DADE2;
+        }
+        .pink-marking {
+            background-color: #F8C7D8;
+        }
+        .blue-bg {
+            background-color: #D6EAF8 !important;
+        }
+        .pink-bg {
+            background-color: #FADBD8 !important;
+        }
+        .controls {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 5px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #2980b9;
+        }
+        .btn.reset {
+            background: #e74c3c;
+        }
+        .btn.reset:hover {
+            background: #c0392b;
+        }
+        .btn.generate {
+            background: #27ae60;
+        }
+        .btn.generate:hover {
+            background: #229954;
+        }
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 0 5px 5px 0;
+        }
+        .weekend {
+            background-color: #f8f9fa;
+        }
+        .date-range {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .date-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .counter {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 15px 0;
+            font-size: 18px;
+        }
+        .counter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .counter-box {
+            width: 20px;
+            height: 20px;
+            border-radius: 2px;
+        }
+        .blue-counter {
+            background-color: #5DADE2;
+        }
+        .pink-counter {
+            background-color: #F8C7D8;
+        }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <h1>לוח שנה דינמי</h1>
+            <p>בחר טווח תאריכים וצור לוח שנה מותאם אישית</p>
+        </div>
+        
+        <div class="instructions">
+            <h3>הוראות שימוש:</h3>
+            <ol>
+                <li>בחר טווח תאריכים ולחץ "צור לוח שנה"</li>
+                <li>לחץ על תאים להוספת סימונים (כחול או ורוד)</li>
+                <li>לחץ על "למלא ריבועים" כדי להחליף את צבע הרקע לפי הסימון</li>
+                <li>לחץ על "אפס" כדי לנקות את כל הסימונים והצבעים</li>
+            </ol>
+        </div>
+        
+        <div class="date-range">
+            <label for="startDate">מתאריך:</label>
+            <input type="date" id="startDate" class="date-input" value="2025-08-01">
+            <label for="endDate">עד תאריך:</label>
+            <input type="date" id="endDate" class="date-input" value="2025-08-31">
+            <button class="btn generate" onclick="generateCalendar()">צור לוח שנה</button>
+        </div>
+        
+        <div class="counter">
+            <div class="counter-item">
+                <div class="counter-box blue-counter"></div>
+                <span>כחולים: <span id="blueCount">0</span></span>
+            </div>
+            <div class="counter-item">
+                <div class="counter-box pink-counter"></div>
+                <span>ורודים: <span id="pinkCount">0</span></span>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="fillSquares()">למלא ריבועים</button>
+            <button class="btn reset" onclick="resetCalendar()">אפס</button>
+        </div>
+        
+        <div class="calendar-grid" id="calendar">
+            <!-- Calendar will be generated by JavaScript -->
+        </div>
+    </div>
+
+    <script>
+        // Days of the week in Hebrew (Sunday to Saturday)
+        const hebrewDays = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+        let initialMarks = '';
+
+        // Initialize calendar on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStateFromURL();
+        });
+
+        // Generate calendar based on selected date range
+        async function generateCalendar() {
+            const startDateInput = document.getElementById('startDate').value;
+            const endDateInput = document.getElementById('endDate').value;
+            const startDate = new Date(startDateInput);
+            const endDate = new Date(endDateInput);
+
+            if (startDate > endDate) {
+                alert('תאריך ההתחלה חייב להיות לפני תאריך הסיום');
+                return;
+            }
+
+            let hebcalData = {};
+            try {
+                const start = startDate.toISOString().split('T')[0];
+                const end = endDate.toISOString().split('T')[0];
+                const apiUrl = `https://www.hebcal.com/converter?cfg=json&g2h=1&start=${start}&end=${end}&leyning=on`;
+                
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                if (data.hdates) {
+                    hebcalData = data.hdates;
+                }
+
+            } catch (error) {
+                console.error("Error fetching Hebrew dates:", error);
+                const calendar = document.getElementById('calendar');
+                calendar.innerHTML = `<p style="color: red; text-align: center;">שגיאה בטעינת נתונים מהשרת. נסה שוב מאוחר יותר.</p>`;
+                return;
+            }
+
+            const calendar = document.getElementById('calendar');
+            calendar.innerHTML = '';
+
+            hebrewDays.forEach(day => {
+                const dayHeader = document.createElement('div');
+                dayHeader.className = 'day-header';
+                dayHeader.textContent = day;
+                calendar.appendChild(dayHeader);
+            });
+
+            const currentDate = new Date(startDate);
+            let currentWeekday = startDate.getDay();
+
+            for (let i = 0; i < currentWeekday; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-cell';
+                calendar.appendChild(emptyCell);
+            }
+
+            let prevGregorianMonth = -1;
+            let prevHebrewMonth = '';
+
+            while (currentDate <= endDate) {
+                const cell = document.createElement('div');
+                cell.className = 'calendar-cell';
+                const weekday = currentDate.getDay();
+                if (weekday === 5 || weekday === 6) {
+                    cell.classList.add('weekend');
+                }
+
+                const formattedDate = currentDate.toISOString().split('T')[0];
+                cell.dataset.date = formattedDate;
+
+                const hebrewDateInfo = hebcalData[formattedDate];
+                let cellHTML = `<div class="date">${currentDate.getDate()}</div>`;
+
+                if (hebrewDateInfo) {
+                    const isFirstDayOfCalendar = currentDate.getTime() === startDate.getTime();
+                    const currentGregorianMonth = currentDate.getMonth();
+                    const hebrewDateParts = hebrewDateInfo.hebrew.split(' ');
+                    const currentHebrewMonth = hebrewDateParts.length > 1 ? hebrewDateParts.slice(1).join(' ').replace(/ תש.*$/, '') : '';
+
+                    if (isFirstDayOfCalendar) {
+                        const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
+                        cellHTML += `<div class="gregorian-month">${monthName}</div>`;
+                        if (currentHebrewMonth) {
+                            cellHTML += `<div class="hebrew-month">${currentHebrewMonth}</div>`;
+                        }
+                    } else {
+                        if (currentGregorianMonth !== prevGregorianMonth) {
+                            const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
+                            cellHTML += `<div class="gregorian-month">${monthName}</div>`;
+                        }
+                        if (currentHebrewMonth && currentHebrewMonth !== prevHebrewMonth) {
+                            cellHTML += `<div class="hebrew-month">${currentHebrewMonth}</div>`;
+                        }
+                    }
+                    prevGregorianMonth = currentGregorianMonth;
+                    prevHebrewMonth = currentHebrewMonth;
+
+                    cellHTML += `<div class="hebrew-date">${hebrewDateInfo.hebrew}</div>`;
+
+                    if (hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
+                        cellHTML += '<div class="events">';
+                        hebrewDateInfo.events.forEach(event => {
+                            cellHTML += `<div>${event}</div>`;
+                        });
+                        cellHTML += '</div>';
+                    }
+                }
+
+                cell.innerHTML = cellHTML;
+                cell.addEventListener('click', function() {
+                    toggleMarking(this);
+                });
+                calendar.appendChild(cell);
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            applyMarksFromURL();
+            updateCounter();
+            updateURLFromState();
+        }
+
+        function updateCellView(cell) {
+            const marking = cell.dataset.marking;
+            const existingMarking = cell.querySelector('.marking');
+            if (existingMarking) {
+                existingMarking.remove();
+            }
+            cell.classList.remove('blue-bg', 'pink-bg');
+            if (marking === 'blue' || marking === 'pink') {
+                const markingElement = document.createElement('div');
+                markingElement.className = `marking ${marking}-marking`;
+                cell.appendChild(markingElement);
+            } else if (marking === 'blue-bg') {
+                cell.classList.add('blue-bg');
+            } else if (marking === 'pink-bg') {
+                cell.classList.add('pink-bg');
+            }
+        }
+        function toggleMarking(cell) {
+            const currentMarking = cell.dataset.marking || '';
+            let newMarking = '';
+            switch (currentMarking) {
+                case '':
+                    newMarking = 'blue';
+                    break;
+                case 'blue':
+                case 'blue-bg':
+                    newMarking = 'pink';
+                    break;
+
+                case 'pink':
+                case 'pink-bg':
+                    newMarking = '';
+                    break;
+            }
+            if (newMarking) {
+                cell.dataset.marking = newMarking;
+            } else {
+                delete cell.dataset.marking;
+            }
+            updateCellView(cell);
+            updateCounter();
+            updateURLFromState();
+        }
+        function fillSquares() {
+            const cells = document.querySelectorAll('.calendar-cell[data-marking]');
+            cells.forEach(cell => {
+                const marking = cell.dataset.marking;
+                if (marking === 'blue') {
+                    cell.dataset.marking = 'blue-bg';
+                } else if (marking === 'pink') {
+                    cell.dataset.marking = 'pink-bg';
+                }
+                updateCellView(cell);
+            });
+            updateCounter();
+            updateURLFromState();
+        }
+        function resetCalendar() {
+            const cells = document.querySelectorAll('.calendar-cell[data-marking]');
+            cells.forEach(cell => {
+                delete cell.dataset.marking;
+                updateCellView(cell);
+            });
+            updateCounter();
+            updateURLFromState();
+        }
+        function updateURLFromState() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const cells = document.querySelectorAll('.calendar-cell[data-date]');
+            const marks = Array.from(cells).map(cell => {
+                const marking = cell.dataset.marking;
+                if (marking === 'blue') return '1';
+                if (marking === 'pink') return '2';
+                if (marking === 'blue-bg') return '3';
+                if (marking === 'pink-bg') return '4';
+                return '0';
+            }).join('');
+            const params = new URLSearchParams();
+            params.set('startDate', startDate);
+            params.set('endDate', endDate);
+            params.set('marks', marks);
+            history.replaceState({}, '', `?${params.toString()}`);
+        }
+        function loadStateFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            const startDate = params.get('startDate');
+            const endDate = params.get('endDate');
+            const marks = params.get('marks');
+            if (startDate && endDate) {
+                document.getElementById('startDate').value = startDate;
+                document.getElementById('endDate').value = endDate;
+                initialMarks = marks || '';
+            }
+            generateCalendar();
+        }
+        function applyMarksFromURL() {
+            if (!initialMarks) return;
+            const cells = document.querySelectorAll('.calendar-cell[data-date]');
+            const markMapping = { '1': 'blue', '2': 'pink', '3': 'blue-bg', '4': 'pink-bg' };
+            cells.forEach((cell, index) => {
+                if (index < initialMarks.length) {
+                    const markType = initialMarks[index];
+                    if (markType !== '0') {
+                        cell.dataset.marking = markMapping[markType];
+                        updateCellView(cell);
+                    }
+                }
+            });
+            initialMarks = '';
+        }
+        function updateCounter() {
+            const cells = document.querySelectorAll('.calendar-cell[data-marking]');
+            let blueCount = 0;
+            let pinkCount = 0;
+            cells.forEach(cell => {
+                const marking = cell.dataset.marking;
+                if (marking === 'blue' || marking === 'blue-bg') {
+                    blueCount++;
+                } else if (marking === 'pink' || marking === 'pink-bg') {
+                    pinkCount++;
+                }
+            });
+            document.getElementById('blueCount').textContent = blueCount;
+            document.getElementById('pinkCount').textContent = pinkCount;
+        }
+    </script>
+</body>
+</html>
