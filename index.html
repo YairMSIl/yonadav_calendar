@@ -292,7 +292,6 @@
             }
 
             let prevGregorianMonth = -1;
-            let prevHebrewMonth = '';
 
             while (currentDate <= endDate) {
                 const cell = document.createElement('div');
@@ -311,28 +310,28 @@
                 if (hebrewDateInfo) {
                     const isFirstDayOfCalendar = currentDate.getTime() === startDate.getTime();
                     const currentGregorianMonth = currentDate.getMonth();
-                    const hebrewDateParts = hebrewDateInfo.hebrew.split(' ');
-                    const currentHebrewMonth = hebrewDateParts.length > 1 ? hebrewDateParts.slice(1).join(' ').replace(/ תש.*$/, '') : '';
 
-                    if (isFirstDayOfCalendar) {
+                    // Gregorian month display
+                    if (isFirstDayOfCalendar || currentGregorianMonth !== prevGregorianMonth) {
                         const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
                         cellHTML += `<div class="gregorian-month">${monthName}</div>`;
-                        if (currentHebrewMonth) {
-                            cellHTML += `<div class="hebrew-month">${currentHebrewMonth}</div>`;
-                        }
-                    } else {
-                        if (currentGregorianMonth !== prevGregorianMonth) {
-                            const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
-                            cellHTML += `<div class="gregorian-month">${monthName}</div>`;
-                        }
-                        if (currentHebrewMonth && currentHebrewMonth !== prevHebrewMonth) {
-                            cellHTML += `<div class="hebrew-month">${currentHebrewMonth}</div>`;
-                        }
                     }
-                    prevGregorianMonth = currentGregorianMonth;
-                    prevHebrewMonth = currentHebrewMonth;
 
-                    cellHTML += `<div class="hebrew-date">${hebrewDateInfo.hebrew}</div>`;
+                    // Hebrew date display logic
+                    const hebrewDay = hebrewDateInfo.heDateParts.d;
+                    const hebrewMonth = hebrewDateInfo.heDateParts.m;
+                    const isFirstOfHebrewMonth = hebrewDateInfo.hd === 1;
+
+                    if (isFirstDayOfCalendar) {
+                        cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;
+                    } else if (isFirstOfHebrewMonth) {
+                        cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;
+                    }
+
+                    // Always show the Hebrew day.
+                    cellHTML += `<div class="hebrew-date">${hebrewDay}</div>`;
+
+                    prevGregorianMonth = currentGregorianMonth;
 
                     if (hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
                         cellHTML += '<div class="events">';
