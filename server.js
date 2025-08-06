@@ -11,24 +11,38 @@ const MIME_TYPES = {
 };
 
 const server = http.createServer((req, res) => {
-    let filePath = '.' + req.url;
-    if (filePath === './') {
-        filePath = './index.html';
+    // Parse URL to handle client-side routing (ignore query parameters for file lookup)
+    const parsedUrl = require('url').parse(req.url);
+    let pathname = `.${parsedUrl.pathname}`;
+
+    // If root is requested, serve index.html
+    if (pathname === './') {
+        pathname = './index.html';
     }
 
-    const extname = String(path.extname(filePath)).toLowerCase();
+    const extname = String(path.extname(pathname)).toLowerCase();
     const contentType = MIME_TYPES[extname] || 'application/octet-stream';
 
-    fs.readFile(filePath, (err, content) => {
+    fs.readFile(pathname, (err, content) => {
         if (err) {
+            // If the file is not found, serve index.html as a fallback for SPA routing
             if (err.code === 'ENOENT') {
-                res.writeHead(404, { 'Content-Type': 'text/html' });
-                res.end('<h1>404 Not Found</h1>', 'utf-8');
+                fs.readFile('./index.html', (err, content) => {
+                    if (err) {
+                        res.writeHead(500);
+                        res.end('Sorry, an error occurred: ' + err.code);
+                    } else {
+                        res.writeHead(200, { 'Content-Type': 'text/html' });
+                        res.end(content, 'utf-8');
+                    }
+                });
             } else {
+                // For other errors, send a 500 response
                 res.writeHead(500);
-                res.end('Sorry, check with the site admin for error: ' + err.code + ' ..\n');
+                res.end('Sorry, an error occurred: ' + err.code);
             }
         } else {
+            // If the file is found, serve it
             res.writeHead(200, { 'Content-Type': contentType });
             res.end(content, 'utf-8');
         }
