@@ -4,6 +4,7 @@
  */
 
 const hebrewDays = ["ראשון", "שני", "שלישי", "רביעי", "חמישי", "שישי", "שבת"];
+const hebrewDaysShort = ["א'", "ב'", "ג'", "ד'", "ה'", "ו'", "ש'"];
 
 /**
  * Generates the calendar grid based on a selected date range.
@@ -50,7 +51,8 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
 
-    hebrewDays.forEach(day => {
+    const days = window.innerWidth < 480 ? hebrewDaysShort : hebrewDays;
+    days.forEach(day => {
         const dayHeader = document.createElement('div');
         dayHeader.className = 'day-header';
         dayHeader.textContent = day;

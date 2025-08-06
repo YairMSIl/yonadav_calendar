@@ -1,5 +1,7 @@
 # Comments from js\calendar.js
 
+# of lines = 134
+
 ### `calendar.js`
 
 ```
