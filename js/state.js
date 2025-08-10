@@ -3,8 +3,10 @@
  * It handles loading the state from the URL on page load and updating the URL when the state changes.
  */
 
+import { applySplitDayView } from './ui.js';
+
 export function updateURLFromState() {
-    const startDate = document.getElementById('startDate').value;
+   const startDate = document.getElementById('startDate').value;
     const endDate = document.getElementById('endDate').value;
     const cells = document.querySelectorAll('.calendar-cell[data-date]');
     const marks = Array.from(cells).map(cell => {
@@ -19,6 +21,12 @@ export function updateURLFromState() {
     params.set('startDate', startDate);
     params.set('endDate', endDate);
     params.set('marks', marks);
+
+    const splitButton = document.getElementById('split-day-toggle');
+    if (splitButton && splitButton.checked) {
+        params.set('split', 'true');
+    }
+
     history.replaceState({}, '', `?${params.toString()}`);
 }
 
@@ -26,11 +34,13 @@ export function loadStateFromURL() {
     const params = new URLSearchParams(window.location.search);
     const startDate = params.get('startDate');
     const endDate = params.get('endDate');
-    const marks = params.get('marks');
+
     if (startDate && endDate) {
         document.getElementById('startDate').value = startDate;
         document.getElementById('endDate').value = endDate;
-        return marks || '';
+        const marks = params.get('marks');
+        const split = params.get('split');
+        return { marks: marks || '', split: split === 'true' };
     }
     return null;
 }
@@ -48,4 +58,5 @@ export function applyMarksFromURL(marks, updateCellView) {
             }
         }
     });
+    applySplitDayView();
 }

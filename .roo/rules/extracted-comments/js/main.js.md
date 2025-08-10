@@ -10,7 +10,3 @@ the application flow.
 
 #### `async function main()`
 
-```
-Main function to initialize the application.
-```
-

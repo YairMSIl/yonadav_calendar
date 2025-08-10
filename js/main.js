@@ -5,55 +5,42 @@
  */
 
 import { generateCalendar } from './calendar.js';
-import { toggleMarking, fillSquares, resetCalendar, updateCellView, updateCounter } from './ui.js';
 import { updateURLFromState, loadStateFromURL, applyMarksFromURL } from './state.js';
+import { toggleMarking, fillSquares, resetCalendar, updateCellView, updateCounter, applySplitDayView } from './ui.js';
 
-/**
- * Main function to initialize the application.
- */
 async function main() {
-    const initialMarks = loadStateFromURL();
-
     const dependencies = {
         toggleMarking,
         updateURLFromState,
-        updateCounter,
-        applyMarksFromURL,
-        updateCellView
+        updateCellView,
+        updateCounter
     };
 
-    await generateCalendar(dependencies);
+    document.getElementById('generate-calendar-btn').addEventListener('click', () => generateCalendar(dependencies));
+    document.getElementById('fill-squares-btn').addEventListener('click', () => fillSquares(updateURLFromState));
+    document.getElementById('reset-calendar-btn').addEventListener('click', () => resetCalendar(updateURLFromState));
 
-    if (initialMarks) {
-        applyMarksFromURL(initialMarks, updateCellView);
+    const splitDayToggleBtn = document.getElementById('split-day-toggle-btn');
+    if (splitDayToggleBtn) {
+        splitDayToggleBtn.addEventListener('click', () => {
+            splitDayToggleBtn.classList.toggle('active');
+            applySplitDayView();
+            updateURLFromState();
+        });
     }
-    updateCounter();
+
+    const initialState = loadStateFromURL();
+    if (initialState) {
+        if (initialState.split) {
+            splitDayToggleBtn.classList.add('active');
+        }
+        await generateCalendar(dependencies);
+        applyMarksFromURL(initialState.marks, updateCellView);
+        updateCounter();
+        applySplitDayView(); // Apply view after everything is loaded
+    } else {
+        await generateCalendar(dependencies);
+    }
 }
 
-// --- Event Listeners ---
-
 document.addEventListener('DOMContentLoaded', main);
-
-document.getElementById('generate-calendar-btn').addEventListener('click', async () => {
-    const dependencies = {
-        toggleMarking,
-        updateURLFromState,
-        updateCounter,
-        applyMarksFromURL,
-        updateCellView
-    };
-    await generateCalendar(dependencies);
-    const marks = new URLSearchParams(window.location.search).get('marks');
-    if (marks) {
-        applyMarksFromURL(marks, updateCellView);
-    }
-    updateCounter();
-});
-
-document.getElementById('fill-squares-btn').addEventListener('click', () => {
-    fillSquares(updateURLFromState);
-});
-
-document.getElementById('reset-calendar-btn').addEventListener('click', () => {
-    resetCalendar(updateURLFromState);
-});

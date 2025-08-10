@@ -1,5 +1,7 @@
 # Comments from js\ui.js
 
+# of lines = 150
+
 ### `ui.js`
 
 ```
@@ -46,5 +48,12 @@ Fills the marked squares, changing dots to background colors.
 ```
 Resets all markings from the calendar.
 @param {function} updateURLFromState Function to call to update the URL state.
+```
+
+
+#### `export function applySplitDayView()`
+
+```
+Applies a split background to days that are at the boundary of two different colors.
 ```
 

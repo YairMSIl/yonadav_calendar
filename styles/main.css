@@ -151,6 +151,12 @@ body {
 .btn.generate:hover {
     background: var(--success-accent-hover);
 }
+
+.btn.active {
+    background-color: var(--success-accent);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+}
+
 .instructions {
     background: var(--info-bg);
     border-left: 4px solid var(--primary-accent);
@@ -316,4 +322,8 @@ body {
     .events {
         font-size: 9px;
     }
+}
+
+.calendar-cell.split-bg {
+    background: linear-gradient(to right, var(--current-color) 50%, var(--prev-color) 50%);
 }

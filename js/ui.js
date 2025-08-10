@@ -91,6 +91,7 @@ export function fillSquares(updateURLFromState) {
     });
     updateCounter();
     updateURLFromState();
+    applySplitDayView();
 }
 
 /**
@@ -105,4 +106,45 @@ export function resetCalendar(updateURLFromState) {
     });
     updateCounter();
     updateURLFromState();
+    applySplitDayView();
+}
+
+/**
+ * Applies a split background to days that are at the boundary of two different colors.
+ */
+export function applySplitDayView() {
+    const toggleBtn = document.getElementById('split-day-toggle-btn');
+    if (!toggleBtn) return;
+
+    const cells = document.querySelectorAll('.calendar-cell[data-date]');
+    const colorMap = {
+        'blue-bg': 'var(--mark-blue-bg)',
+        'pink-bg': 'var(--mark-pink-bg)'
+    };
+
+    cells.forEach(cell => {
+        cell.classList.remove('split-bg');
+        cell.style.removeProperty('--prev-color');
+        cell.style.removeProperty('--current-color');
+    });
+
+    if (!toggleBtn.classList.contains('active')) {
+        return;
+    }
+
+    for (let i = 0; i < cells.length; i++) {
+        const currentCell = cells[i];
+        const prevCell = i > 0 ? cells[i - 1] : null;
+
+        if (prevCell) {
+            const prevMarking = prevCell.dataset.marking;
+            const currentMarking = currentCell.dataset.marking;
+
+            if (prevMarking && currentMarking && prevMarking !== currentMarking && colorMap[prevMarking] && colorMap[currentMarking]) {
+                currentCell.classList.add('split-bg');
+                currentCell.style.setProperty('--prev-color', colorMap[prevMarking]);
+                currentCell.style.setProperty('--current-color', colorMap[currentMarking]);
+            }
+        }
+    }
 }
