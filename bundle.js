@@ -70,15 +70,16 @@ function _generateCalendar() {
                 locale: 'he',
                 sedrot: true,
                 year: year,
-                month: month
+                month: month,
+                il: true
               });
               events.push.apply(events, _toConsumableArray(monthEvents));
             }
           }
           for (_i = 0, _events = events; _i < _events.length; _i++) {
             event = _events[_i];
-            eventDate = event.getDate().greg();
-            formattedDate = eventDate.toISOString().split('T')[0];
+            eventDate = event.getDate().greg(); // Use a timezone-safe key instead of toISOString()
+            formattedDate = "".concat(eventDate.getFullYear(), "-").concat(String(eventDate.getMonth() + 1).padStart(2, '0'), "-").concat(String(eventDate.getDate()).padStart(2, '0'));
             if (!hebrewDatesMap.has(formattedDate)) {
               hebrewDatesMap.set(formattedDate, {
                 hdate: event.getDate(),
@@ -105,7 +106,7 @@ function _generateCalendar() {
           }
           prevGregorianMonth = -1;
           _loop = /*#__PURE__*/_regenerator().m(function _loop() {
-            var cell, weekday, formattedDate, hebrewDateInfo, cellHTML, isFirstDayOfCalendar, currentGregorianMonth, monthName, hebrewDay, hebrewMonth, isFirstOfHebrewMonth;
+            var cell, weekday, formattedDate, cellHTML, isFirstDayOfCalendar, currentGregorianMonth, monthName, hdate, hebrewDayString, hebrewMonth, isFirstOfHebrewMonth, hebrewDateInfo;
             return _regenerator().w(function (_context) {
               while (1) switch (_context.n) {
                 case 0:
@@ -115,44 +116,40 @@ function _generateCalendar() {
                   if (weekday === 5 || weekday === 6) {
                     cell.classList.add('weekend');
                   }
-                  formattedDate = currentDate.toISOString().split('T')[0];
+                  formattedDate = "".concat(currentDate.getFullYear(), "-").concat(String(currentDate.getMonth() + 1).padStart(2, '0'), "-").concat(String(currentDate.getDate()).padStart(2, '0'));
                   cell.dataset.date = formattedDate;
-                  hebrewDateInfo = hebrewDatesMap.get(formattedDate);
                   cellHTML = "<div class=\"date\">".concat(currentDate.getDate(), "</div>");
-                  if (hebrewDateInfo) {
-                    isFirstDayOfCalendar = currentDate.getTime() === startDate.getTime();
-                    currentGregorianMonth = currentDate.getMonth(); // Gregorian month display
-                    if (isFirstDayOfCalendar || currentGregorianMonth !== prevGregorianMonth) {
-                      monthName = currentDate.toLocaleString('en-US', {
-                        month: 'long'
-                      });
-                      cellHTML += "<div class=\"gregorian-month\">".concat(monthName, "</div>");
-                    }
+                  isFirstDayOfCalendar = currentDate.getTime() === startDate.getTime();
+                  currentGregorianMonth = currentDate.getMonth(); // Gregorian month display
+                  if (isFirstDayOfCalendar || currentGregorianMonth !== prevGregorianMonth) {
+                    monthName = currentDate.toLocaleString('he-IL', {
+                      month: 'long'
+                    });
+                    cellHTML += "<div class=\"gregorian-month\">".concat(monthName, "</div>");
+                  }
 
-                    // Hebrew date display logic
-                    hebrewDay = hebrewDateInfo.hdate.getDate();
-                    hebrewMonth = hebrewDateInfo.hdate.getMonthName('he');
-                    isFirstOfHebrewMonth = hebrewDateInfo.hdate.getDate() === 1;
-                    if (isFirstDayOfCalendar) {
-                      cellHTML += "<div class=\"hebrew-month\">".concat(hebrewMonth, "</div>");
-                    } else if (isFirstOfHebrewMonth) {
-                      cellHTML += "<div class=\"hebrew-month\">".concat(hebrewMonth, "</div>");
-                    }
+                  // Hebrew date display logic
+                  hdate = new _core.HDate(currentDate);
+                  console.log('Current Hebrew Date:', hdate.render('he')); // Debugging line
+                  hebrewDayString = hdate.renderGematriya().split(' ')[0]; // "ט״ו"
+                  hebrewMonth = hdate.render('he').split(' ')[1].replace('בְּ', '').replace(',', ''); // "אָב"
+                  isFirstOfHebrewMonth = hdate.getDate() === 1;
+                  if (isFirstDayOfCalendar) {
+                    cellHTML += "<div class=\"hebrew-month\">".concat(hebrewMonth, "</div>");
+                  } else if (isFirstOfHebrewMonth) {
+                    cellHTML += "<div class=\"hebrew-month\">".concat(hebrewMonth, "</div>");
+                  }
 
-                    // Always show the Hebrew day.
-                    cellHTML += "<div class=\"hebrew-date\">".concat(hebrewDay, "</div>");
-                    prevGregorianMonth = currentGregorianMonth;
-                    if (hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
-                      cellHTML += '<div class="events">';
-                      hebrewDateInfo.events.forEach(function (event) {
-                        // Only show Parashat on Saturdays (weekday 6)
-                        if (event.startsWith('Parashat') && weekday !== 6) {
-                          return; // Skip this event
-                        }
-                        cellHTML += "<div>".concat(event, "</div>");
-                      });
-                      cellHTML += '</div>';
-                    }
+                  // Always show the Hebrew day.
+                  cellHTML += "<div class=\"hebrew-date\">".concat(hebrewDayString, "</div>");
+                  prevGregorianMonth = currentGregorianMonth;
+                  hebrewDateInfo = hebrewDatesMap.get(formattedDate);
+                  if (hebrewDateInfo && hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
+                    cellHTML += '<div class="events">';
+                    hebrewDateInfo.events.forEach(function (event) {
+                      cellHTML += "<div>".concat(event, "</div>");
+                    });
+                    cellHTML += '</div>';
                   }
                   cell.innerHTML = cellHTML;
                   cell.addEventListener('click', function () {
