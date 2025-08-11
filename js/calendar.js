@@ -1,3 +1,4 @@
+import { HebrewCalendar, HDate } from '@hebcal/core';
 /**
  * @file-overview This file contains the core calendar generation logic, including
  * fetching data from the Hebcal API and building the HTML for the calendar grid.
@@ -26,26 +27,37 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
         return;
     }
 
-    let hebcalData = {};
-    try {
-        const start = startDate.toISOString().split('T')[0];
-        const end = endDate.toISOString().split('T')[0];
-        const apiUrl = `https://www.hebcal.com/converter?cfg=json&g2h=1&start=${start}&end=${end}&leyning=on&s=on`;
-        
-        const response = await fetch(apiUrl);
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        if (data.hdates) {
-            hebcalData = data.hdates;
-        }
+    const hebrewDatesMap = new Map();
+    const events = [];
+    const startYear = startDate.getFullYear();
+    const endYear = endDate.getFullYear();
+    const startMonth = startDate.getMonth() + 1;
+    const endMonth = endDate.getMonth() + 1;
 
-    } catch (error) {
-        console.error("Error fetching Hebrew dates:", error);
-        const calendar = document.getElementById('calendar');
-        calendar.innerHTML = `<p style="color: red; text-align: center;">שגיאה בטעינת נתונים מהשרת. נסה שוב מאוחר יותר.</p>`;
-        return;
+    for (let year = startYear; year <= endYear; year++) {
+        const monthStart = (year === startYear) ? startMonth : 1;
+        const monthEnd = (year === endYear) ? endMonth : 12;
+        for (let month = monthStart; month <= monthEnd; month++) {
+            const monthEvents = HebrewCalendar.calendar({
+                locale: 'he',
+                sedrot: true,
+                year: year,
+                month: month
+            });
+            events.push(...monthEvents);
+        }
+    }
+
+    for (const event of events) {
+        const eventDate = event.getDate().greg();
+        const formattedDate = eventDate.toISOString().split('T')[0];
+        if (!hebrewDatesMap.has(formattedDate)) {
+            hebrewDatesMap.set(formattedDate, {
+                hdate: event.getDate(),
+                events: []
+            });
+        }
+        hebrewDatesMap.get(formattedDate).events.push(event.render('he'));
     }
 
     const calendar = document.getElementById('calendar');
@@ -81,7 +93,7 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
         const formattedDate = currentDate.toISOString().split('T')[0];
         cell.dataset.date = formattedDate;
 
-        const hebrewDateInfo = hebcalData[formattedDate];
+        const hebrewDateInfo = hebrewDatesMap.get(formattedDate);
         let cellHTML = `<div class="date">${currentDate.getDate()}</div>`;
 
         if (hebrewDateInfo) {
@@ -95,9 +107,9 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
             }
 
             // Hebrew date display logic
-            const hebrewDay = hebrewDateInfo.heDateParts.d;
-            const hebrewMonth = hebrewDateInfo.heDateParts.m;
-            const isFirstOfHebrewMonth = hebrewDateInfo.hd === 1;
+            const hebrewDay = hebrewDateInfo.hdate.getDate();
+            const hebrewMonth = hebrewDateInfo.hdate.getMonthName('he');
+            const isFirstOfHebrewMonth = hebrewDateInfo.hdate.getDate() === 1;
 
             if (isFirstDayOfCalendar) {
                 cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;

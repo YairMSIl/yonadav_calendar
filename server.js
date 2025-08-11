@@ -8,44 +8,56 @@ const MIME_TYPES = {
     '.html': 'text/html',
     '.css': 'text/css',
     '.js': 'application/javascript',
+    '.json': 'application/json',
+    '.png': 'image/png',
+    '.jpg': 'image/jpeg',
+    '.gif': 'image/gif',
+    '.svg': 'image/svg+xml',
 };
 
 const server = http.createServer((req, res) => {
-    // Parse URL to handle client-side routing (ignore query parameters for file lookup)
-    const parsedUrl = require('url').parse(req.url);
-    let pathname = `.${parsedUrl.pathname}`;
-
-    // If root is requested, serve index.html
-    if (pathname === './') {
-        pathname = './index.html';
+    // Sanitize and parse the URL
+    let reqUrl = req.url.split('?')[0];
+    if (reqUrl === '/') {
+        reqUrl = '/index.html';
     }
 
-    const extname = String(path.extname(pathname)).toLowerCase();
-    const contentType = MIME_TYPES[extname] || 'application/octet-stream';
+    // Prevent directory traversal
+    const safePath = path.normalize(reqUrl).replace(/^(\.\.[\/\\])+/, '');
+    let filePath = path.join(__dirname, safePath);
 
-    fs.readFile(pathname, (err, content) => {
-        if (err) {
-            // If the file is not found, serve index.html as a fallback for SPA routing
-            if (err.code === 'ENOENT') {
-                fs.readFile('./index.html', (err, content) => {
-                    if (err) {
-                        res.writeHead(500);
-                        res.end('Sorry, an error occurred: ' + err.code);
-                    } else {
-                        res.writeHead(200, { 'Content-Type': 'text/html' });
-                        res.end(content, 'utf-8');
-                    }
-                });
-            } else {
-                // For other errors, send a 500 response
-                res.writeHead(500);
-                res.end('Sorry, an error occurred: ' + err.code);
-            }
-        } else {
-            // If the file is found, serve it
-            res.writeHead(200, { 'Content-Type': contentType });
-            res.end(content, 'utf-8');
+    fs.exists(filePath, (exist) => {
+        if (!exist) {
+            // If the file doesn't exist, it might be a client-side route.
+            // Serve index.html as a fallback.
+            fs.readFile(path.join(__dirname, 'index.html'), (err, content) => {
+                if (err) {
+                    res.writeHead(500, { 'Content-Type': 'text/plain' });
+                    res.end('Server Error');
+                    return;
+                }
+                res.writeHead(200, { 'Content-Type': 'text/html' });
+                res.end(content, 'utf-8');
+            });
+            return;
         }
+
+        // If it's a directory, default to index.html
+        if (fs.statSync(filePath).isDirectory()) {
+            filePath = path.join(filePath, 'index.html');
+        }
+
+        fs.readFile(filePath, (err, content) => {
+            if (err) {
+                res.writeHead(500, { 'Content-Type': 'text/plain' });
+                res.end('Server Error');
+            } else {
+                const ext = path.extname(filePath);
+                const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+                res.writeHead(200, { 'Content-Type': contentType });
+                res.end(content, 'utf-8');
+            }
+        });
     });
 });
 
