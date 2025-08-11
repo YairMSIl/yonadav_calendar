@@ -1,1 +1,1 @@
-[ ] Use Hebcal lib and not the API
+[ ] Hebrew dates seem to not appear on any of the days unless it has an event. The date is a number instead of the hebrew letter. All the events of "שבת XXX" and "פרשת YYY" should be on Saturday (שבת) and not friday (שישי). 
