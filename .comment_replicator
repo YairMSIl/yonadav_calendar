@@ -1,0 +1,16 @@
+{
+    "outputFolder": ".roo/rules/extracted-comments",
+    "fileExtensions": [
+        ".js",
+        ".ts",
+        ".tsx",
+        ".vue"
+    ],
+    "enabled": true,
+    "replicator_ignore": [
+        "**/dist/**",
+        "**/out/**",
+        "**/node_modules/**"
+    ],
+    "agent-os-path": "C:\\\\Users\\\\YairMS-Desktop\\\\Documents\\\\code_projects\\\\agent-os"
+}

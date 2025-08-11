@@ -1,0 +1,534 @@
+{
+    "start": "2025-08-01",
+    "end": "2025-09-06",
+    "locale": "en",
+    "hdates": {
+        "2025-08-01": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 7,
+            "hebrew": "ז׳ בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "ז׳"
+            },
+            "events": [
+                "Parashat Devarim"
+            ]
+        },
+        "2025-08-02": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 8,
+            "hebrew": "ח׳ בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "ח׳"
+            },
+            "events": [
+                "Shabbat Chazon",
+                "Erev Tish’a B’Av",
+                "Parashat Devarim"
+            ]
+        },
+        "2025-08-03": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 9,
+            "hebrew": "ט׳ בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "ט׳"
+            },
+            "events": [
+                "Tish’a B’Av",
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-04": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 10,
+            "hebrew": "י׳ בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י׳"
+            },
+            "events": [
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-05": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 11,
+            "hebrew": "י״א בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״א"
+            },
+            "events": [
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-06": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 12,
+            "hebrew": "י״ב בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״ב"
+            },
+            "events": [
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-07": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 13,
+            "hebrew": "י״ג בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״ג"
+            },
+            "events": [
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-08": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 14,
+            "hebrew": "י״ד בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״ד"
+            },
+            "events": [
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-09": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 15,
+            "hebrew": "ט״ו בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "ט״ו"
+            },
+            "events": [
+                "Tu B’Av",
+                "Shabbat Nachamu",
+                "Parashat Vaetchanan"
+            ]
+        },
+        "2025-08-10": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 16,
+            "hebrew": "ט״ז בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "ט״ז"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-11": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 17,
+            "hebrew": "י״ז בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״ז"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-12": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 18,
+            "hebrew": "י״ח בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״ח"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-13": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 19,
+            "hebrew": "י״ט בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "י״ט"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-14": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 20,
+            "hebrew": "כ׳ בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ׳"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-15": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 21,
+            "hebrew": "כ״א בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״א"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-16": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 22,
+            "hebrew": "כ״ב בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ב"
+            },
+            "events": [
+                "Parashat Eikev"
+            ]
+        },
+        "2025-08-17": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 23,
+            "hebrew": "כ״ג בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ג"
+            },
+            "events": [
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-18": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 24,
+            "hebrew": "כ״ד בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ד"
+            },
+            "events": [
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-19": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 25,
+            "hebrew": "כ״ה בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ה"
+            },
+            "events": [
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-20": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 26,
+            "hebrew": "כ״ו בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ו"
+            },
+            "events": [
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-21": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 27,
+            "hebrew": "כ״ז בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ז"
+            },
+            "events": [
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-22": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 28,
+            "hebrew": "כ״ח בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ח"
+            },
+            "events": [
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-23": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 29,
+            "hebrew": "כ״ט בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "כ״ט"
+            },
+            "events": [
+                "Shabbat Mevarchim Chodesh Elul",
+                "Parashat Re’eh"
+            ]
+        },
+        "2025-08-24": {
+            "hy": 5785,
+            "hm": "Av",
+            "hd": 30,
+            "hebrew": "ל׳ בְּאָב תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אב",
+                "d": "ל׳"
+            },
+            "events": [
+                "Rosh Chodesh Elul",
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-25": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 1,
+            "hebrew": "א׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "א׳"
+            },
+            "events": [
+                "Rosh Hashana LaBehemot",
+                "Rosh Chodesh Elul",
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-26": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 2,
+            "hebrew": "ב׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ב׳"
+            },
+            "events": [
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-27": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 3,
+            "hebrew": "ג׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ג׳"
+            },
+            "events": [
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-28": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 4,
+            "hebrew": "ד׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ד׳"
+            },
+            "events": [
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-29": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 5,
+            "hebrew": "ה׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ה׳"
+            },
+            "events": [
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-30": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 6,
+            "hebrew": "ו׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ו׳"
+            },
+            "events": [
+                "Parashat Shoftim"
+            ]
+        },
+        "2025-08-31": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 7,
+            "hebrew": "ז׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ז׳"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        },
+        "2025-09-01": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 8,
+            "hebrew": "ח׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ח׳"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        },
+        "2025-09-02": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 9,
+            "hebrew": "ט׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "ט׳"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        },
+        "2025-09-03": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 10,
+            "hebrew": "י׳ בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "י׳"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        },
+        "2025-09-04": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 11,
+            "hebrew": "י״א בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "י״א"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        },
+        "2025-09-05": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 12,
+            "hebrew": "י״ב בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "י״ב"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        },
+        "2025-09-06": {
+            "hy": 5785,
+            "hm": "Elul",
+            "hd": 13,
+            "hebrew": "י״ג בֶּאֱלוּל תשפ״ה",
+            "heDateParts": {
+                "y": "תשפ״ה",
+                "m": "אלול",
+                "d": "י״ג"
+            },
+            "events": [
+                "Parashat Ki Teitzei"
+            ]
+        }
+    }
+}
