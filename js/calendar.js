@@ -42,7 +42,8 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
                 locale: 'he',
                 sedrot: true,
                 year: year,
-                month: month
+                month: month,
+                il: true
             });
             events.push(...monthEvents);
         }
@@ -50,7 +51,8 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
 
     for (const event of events) {
         const eventDate = event.getDate().greg();
-        const formattedDate = eventDate.toISOString().split('T')[0];
+        // Use a timezone-safe key instead of toISOString()
+        const formattedDate = `${eventDate.getFullYear()}-${String(eventDate.getMonth() + 1).padStart(2, '0')}-${String(eventDate.getDate()).padStart(2, '0')}`;
         if (!hebrewDatesMap.has(formattedDate)) {
             hebrewDatesMap.set(formattedDate, {
                 hdate: event.getDate(),
@@ -59,7 +61,6 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
         }
         hebrewDatesMap.get(formattedDate).events.push(event.render('he'));
     }
-
     const calendar = document.getElementById('calendar');
     calendar.innerHTML = '';
 
@@ -90,49 +91,45 @@ export async function generateCalendar({ toggleMarking, updateURLFromState }) {
             cell.classList.add('weekend');
         }
 
-        const formattedDate = currentDate.toISOString().split('T')[0];
+        const formattedDate = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
         cell.dataset.date = formattedDate;
 
-        const hebrewDateInfo = hebrewDatesMap.get(formattedDate);
         let cellHTML = `<div class="date">${currentDate.getDate()}</div>`;
 
-        if (hebrewDateInfo) {
-            const isFirstDayOfCalendar = currentDate.getTime() === startDate.getTime();
-            const currentGregorianMonth = currentDate.getMonth();
+        const isFirstDayOfCalendar = currentDate.getTime() === startDate.getTime();
+        const currentGregorianMonth = currentDate.getMonth();
 
-            // Gregorian month display
-            if (isFirstDayOfCalendar || currentGregorianMonth !== prevGregorianMonth) {
-                const monthName = currentDate.toLocaleString('en-US', { month: 'long' });
-                cellHTML += `<div class="gregorian-month">${monthName}</div>`;
-            }
+        // Gregorian month display
+        if (isFirstDayOfCalendar || currentGregorianMonth !== prevGregorianMonth) {
+            const monthName = currentDate.toLocaleString('he-IL', { month: 'long' });
+            cellHTML += `<div class="gregorian-month">${monthName}</div>`;
+        }
 
-            // Hebrew date display logic
-            const hebrewDay = hebrewDateInfo.hdate.getDate();
-            const hebrewMonth = hebrewDateInfo.hdate.getMonthName('he');
-            const isFirstOfHebrewMonth = hebrewDateInfo.hdate.getDate() === 1;
+        // Hebrew date display logic
+        const hdate = new HDate(currentDate);
+        console.log('Current Hebrew Date:', hdate.render('he')); // Debugging line
+        const hebrewDayString = hdate.renderGematriya().split(' ')[0]; // "ט״ו"
+        const hebrewMonth = hdate.render('he').split(' ')[1].replace('בְּ', '').replace(',', ''); // "אָב"
+        const isFirstOfHebrewMonth = hdate.getDate() === 1;
 
-            if (isFirstDayOfCalendar) {
-                cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;
-            } else if (isFirstOfHebrewMonth) {
-                cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;
-            }
+        if (isFirstDayOfCalendar) {
+            cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;
+        } else if (isFirstOfHebrewMonth) {
+            cellHTML += `<div class="hebrew-month">${hebrewMonth}</div>`;
+        }
 
-            // Always show the Hebrew day.
-            cellHTML += `<div class="hebrew-date">${hebrewDay}</div>`;
+        // Always show the Hebrew day.
+        cellHTML += `<div class="hebrew-date">${hebrewDayString}</div>`;
 
-            prevGregorianMonth = currentGregorianMonth;
+        prevGregorianMonth = currentGregorianMonth;
 
-            if (hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
-                cellHTML += '<div class="events">';
-                hebrewDateInfo.events.forEach(event => {
-                    // Only show Parashat on Saturdays (weekday 6)
-                    if (event.startsWith('Parashat') && weekday !== 6) {
-                        return; // Skip this event
-                    }
-                    cellHTML += `<div>${event}</div>`;
-                });
-                cellHTML += '</div>';
-            }
+        const hebrewDateInfo = hebrewDatesMap.get(formattedDate);
+        if (hebrewDateInfo && hebrewDateInfo.events && hebrewDateInfo.events.length > 0) {
+            cellHTML += '<div class="events">';
+            hebrewDateInfo.events.forEach(event => {
+                cellHTML += `<div>${event}</div>`;
+            });
+            cellHTML += '</div>';
         }
 
         cell.innerHTML = cellHTML;

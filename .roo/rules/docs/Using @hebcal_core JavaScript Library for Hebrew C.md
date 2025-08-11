@@ -44,6 +44,22 @@ ev.render('he');        // 'שָׁבוּעוֹת'
 ev.render('ashkenazi'); // 'Shavuos'
 ```
 
+### Date Rendering with renderGematriya()
+
+For rendering the day of the month as a Hebrew letter (Gematriya), the `HDate` object has a `renderGematriya()` method.
+
+```javascript
+import {HDate, months} from '@hebcal/hdate';
+const hd = new HDate(15, months.CHESHVAN, 5769);
+hd.renderGematriya(); // 'ט״ו חֶשְׁוָן תשס״ט'
+hd.renderGematriya(true); // 'ט״ו חשון תשס״ט'
+```
+
+To get just the day part, you can split the string:
+```javascript
+const dayAsLetter = hd.renderGematriya().split(' ')[0]; // 'ט״ו'
+```
+
 
 ## Complete Implementation Guide
 
